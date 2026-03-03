@@ -1,7 +1,7 @@
 from pathlib import Path
 from src.ingest import enable_cache, load_session, extract_laps
 from src.storage import save_partitioned_parquet, load_partitioned_parquet
-
+from src.visualization import animate_race
 
 def data_exists(base_path, year, event, session_type):
     path = (
@@ -68,6 +68,10 @@ def main():
 
 
     print(f"\nDataset loaded successfully | Rows: {len(laps_df)}")
+
+    print("\nLaunching track animation...")
+    session = load_session(year, event, session_type)
+    animate_race(session, drivers=["VER", "LEC", "HAM"])
 
 
 if __name__ == "__main__":
