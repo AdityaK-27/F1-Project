@@ -46,8 +46,28 @@ def main():
         session_type=session_type
     )
 
-    print(laps_df.head())
-    print(f"\nTotal laps loaded: {len(laps_df)}")
+    from src.analytics import lap_delta, sector_analysis, tire_stint_analysis
+
+
+    # ===== Analytics Section =====
+    print("\n--- DRIVER COMPARISON ---")
+
+    delta = lap_delta(laps_df, "VER", "LEC")
+    print(f"Average Lap Delta (VER - LEC): {delta}")
+
+    print("\n--- SECTOR ANALYSIS (VER) ---")
+    sectors = sector_analysis(laps_df, "VER")
+
+    print("\n--- SECTOR ANALYSIS (VER) ---")
+    for sector, value in sectors.items():
+        print(f"{sector.replace('_avg', '').replace('Sector', 'Sector ')} Avg: {value}")
+
+    print("\n--- TIRE STINT ANALYSIS (VER) ---")
+    stint_data = tire_stint_analysis(laps_df, "VER")
+    print(stint_data)
+
+
+    print(f"\nDataset loaded successfully | Rows: {len(laps_df)}")
 
 
 if __name__ == "__main__":
