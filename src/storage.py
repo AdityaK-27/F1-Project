@@ -22,3 +22,28 @@ def save_partitioned_parquet(
     df.to_parquet(file_path, engine="pyarrow")
 
     print(f"Saved dataset to: {file_path}")
+
+def load_partitioned_parquet(
+    base_path: str,
+    year: int,
+    event: str,
+    session_type: str,
+    dataset_name: str = "laps"
+):
+    """
+    Load dataset from partitioned parquet storage.
+    """
+
+    path = (
+        Path(base_path)
+        / f"year={year}"
+        / f"event={event}"
+        / f"session={session_type}"
+        / f"{dataset_name}.parquet"
+    )
+
+    if not path.exists():
+        raise FileNotFoundError(f"No dataset found at {path}")
+
+    df = pd.read_parquet(path)
+    return df
